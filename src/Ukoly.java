@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -25,9 +26,14 @@ public class Ukoly extends Application {
     public void start(Stage primaryStage){
 
         window = primaryStage;
+        GridPane grid = new GridPane();
+        grid.setPadding(new Insets(10,10, 10, 10));
+        grid.setVgap(8);
+        grid.setHgap(10);
 
         addBut = new Button("Pridat");
-        addBut.setOnAction(e -> AddTask(box.getValue()));
+        addBut.setOnAction(e -> AddTask());
+
 
         remBut = new Button("Smazat");
         remBut.setOnAction(e -> RemoveTask(box.getValue(), list.getSelectionModel().getSelectedIndex()));
@@ -59,11 +65,15 @@ public class Ukoly extends Application {
         list.getItems().addAll(GetTasks());
 
         // zobrazeni okna
-        VBox layout = new VBox();
-        layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(box,list, addBut,remBut);
 
-        Scene scene = new Scene(layout, 300, 250);
+        GridPane.setConstraints(box, 0, 0);
+        GridPane.setConstraints(list, 0, 1, 2, 1);
+        GridPane.setConstraints(addBut, 0, 2);
+        GridPane.setConstraints(remBut, 1, 2);
+
+        grid.getChildren().addAll(box,list, addBut,remBut);
+
+        Scene scene = new Scene(grid, 300, 250);
         window.setScene(scene);
 
         window.show();
@@ -104,9 +114,13 @@ public class Ukoly extends Application {
         return pom;
     }
 
-    public void AddTask(String clovek){
-        String task = Pridat.display();
-        poznamky.add(new Poznamka(clovek, task));
+    public void AddTask(){
+        ArrayList response = Pridat.display(GetUsers());
+        String[] pp = (String[]) response.get(0);
+        String ukol = (String) response.get(1).toString();
+        for (int i = 0; i < pp.length; i++) {
+            poznamky.add(new Poznamka(pp[i], ukol));
+        }
         Load();
     }
 
