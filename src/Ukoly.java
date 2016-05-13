@@ -30,7 +30,7 @@ public class Ukoly extends Application {
         but.setOnAction(e -> Load());
 
         but2 = new Button("Pridat");
-        but2.setOnAction(e -> AddTask(box.getValue(), "Nova poznamka"));
+        but2.setOnAction(e -> AddTask(box.getValue()));
 
         but3 = new Button("Smazat");
         but3.setOnAction(e -> RemoveTask(box.getValue(), list.getSelectionModel().getSelectedIndex()));
@@ -103,8 +103,9 @@ public class Ukoly extends Application {
         return pom;
     }
 
-    public void AddTask(String clovek, String ukol){
-        poznamky.add(new Poznamka(clovek, ukol));
+    public void AddTask(String clovek){
+        String task = Pridat.display();
+        poznamky.add(new Poznamka(clovek, task));
         Load();
     }
 
