@@ -17,7 +17,6 @@ public class Pridat {
     static ArrayList response;
 
     public static ArrayList display(String[] userList){
-        ppls = new String[userList.length];
         response = new ArrayList();
 
         Stage window = new Stage();
@@ -39,7 +38,14 @@ public class Pridat {
             ObservableList<String> items;
             items = list.getSelectionModel().getSelectedItems();
 
+            // napocita velikost pole
             int i = 0;
+            for (String m : items){
+                i++;
+            }
+            // naplni pole
+            ppls = new String[i];
+            i = 0;
             for (String m : items){
                 ppls[i] = m;
                 i++;

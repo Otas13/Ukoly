@@ -118,6 +118,7 @@ public class Ukoly extends Application {
         ArrayList response = Pridat.display(GetUsers());
         String[] pp = (String[]) response.get(0);
         String ukol = (String) response.get(1).toString();
+        System.out.println(pp.length);
         for (int i = 0; i < pp.length; i++) {
             poznamky.add(new Poznamka(pp[i], ukol));
         }
