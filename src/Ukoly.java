@@ -15,28 +15,31 @@ import java.util.ArrayList;
 public class Ukoly extends Application {
 
     Stage window;
-    Button but, but2, but3;
+    Button addBut, remBut;
     ChoiceBox<String> box;
     ListView<String> list;
     ArrayList<Poznamka> poznamky;
     ArrayList<Uzivatel> lide;
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage){
 
         window = primaryStage;
 
-        but = new Button("Nacist ukoly");
-        but.setOnAction(e -> Load());
+        addBut = new Button("Pridat");
+        addBut.setOnAction(e -> AddTask(box.getValue()));
 
-        but2 = new Button("Pridat");
-        but2.setOnAction(e -> AddTask(box.getValue()));
-
-        but3 = new Button("Smazat");
-        but3.setOnAction(e -> RemoveTask(box.getValue(), list.getSelectionModel().getSelectedIndex()));
+        remBut = new Button("Smazat");
+        remBut.setOnAction(e -> RemoveTask(box.getValue(), list.getSelectionModel().getSelectedIndex()));
 
         box = new ChoiceBox<String>();
 
+        // vytvoreni nejakych uzivatelu
+        lide = new ArrayList<>();
+        lide.add((new Uzivatel("Pepa")));
+        lide.add((new Uzivatel("Frantisek")));
+
+        // naplneni poznamek
         poznamky = new ArrayList<>();
         poznamky.add(new Poznamka("Pepa", "nevim"));
         poznamky.add(new Poznamka("Pepa", "trol"));
@@ -46,13 +49,10 @@ public class Ukoly extends Application {
         poznamky.add(new Poznamka("Frantisek", "acccccca"));
         poznamky.add(new Poznamka("Frantisek", "axxxxxxx"));
 
-        lide = new ArrayList<>();
-        lide.add((new Uzivatel("Pepa")));
-        lide.add((new Uzivatel("Frantisek")));
-
         // defaultne je vybrany pepa
         box.getItems().addAll(GetUsers());
         box.setValue("Pepa");
+        box.getSelectionModel().selectedItemProperty().addListener((choiceBox, oldVal, newVal) -> Load());
 
         // vybere poznamky pro pepu
         list = new ListView<>();
@@ -61,7 +61,7 @@ public class Ukoly extends Application {
         // zobrazeni okna
         VBox layout = new VBox();
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(box,list, but,but2, but3);
+        layout.getChildren().addAll(box,list, addBut,remBut);
 
         Scene scene = new Scene(layout, 300, 250);
         window.setScene(scene);
@@ -77,16 +77,17 @@ public class Ukoly extends Application {
 
     public String[] GetTasks(){
         // napocita velikost pomocneho pole
+        String val = box.getValue();
         int t = 0;
         for (int i = 0; i < poznamky.size(); i++){
-            if(poznamky.get(i).Clovek.equals(box.getValue()))t++;
+            if(poznamky.get(i).Clovek.equals(val))t++;
         }
 
         // naplni pole vysledku pro vybraneho cloveka
         String[] pom = new String[t];
         t = 0;
         for (int i = 0; i < poznamky.size(); i++){
-            if(poznamky.get(i).Clovek.equals(box.getValue())) {
+            if(poznamky.get(i).Clovek.equals(val)) {
                 pom[t] = poznamky.get(i).Obsah;
                 t++;
             }
