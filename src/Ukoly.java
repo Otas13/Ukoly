@@ -1,5 +1,6 @@
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -72,6 +73,7 @@ public class Ukoly extends Application {
         GridPane.setConstraints(remBut, 1, 2);
 
         grid.getChildren().addAll(box,list, addBut,remBut);
+        grid.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(grid, 300, 250);
         window.setScene(scene);
